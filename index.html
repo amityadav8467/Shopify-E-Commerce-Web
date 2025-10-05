@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopify - Modern E-Commerce</title>
-    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts for a nice, clean font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <style>
         /* Custom CSS for the application */
         body {
@@ -52,137 +51,31 @@
 </head>
 <body class="bg-cyan-50">
 
-    <!-- The main container where the entire application will be rendered -->
     <div id="app"></div>
 
-    <!-- The core JavaScript logic for the application -->
     <script>
         // --- MOCK DATA ---
         const initialProducts = [
-          { id: 1, name: 'Classic Leather Jacket', category: 'Apparel', price: 149.99, description: 'A timeless leather jacket for a sleek, modern look. Perfect for all seasons.', imageUrl: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'allsaints.com', sourceUrl: 'https://www.allsaints.com' },
-          { id: 2, name: 'Wireless Bluetooth Headphones', category: 'Electronics', price: 89.99, description: 'High-fidelity sound with 20-hour battery life and noise-cancellation.', imageUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'bose.com', sourceUrl: 'https://www.bose.com' },
-          { id: 3, name: 'Modern Ceramic Vase', category: 'Home Goods', price: 34.50, description: 'Minimalist ceramic vase to add a touch of elegance to any room.', imageUrl: 'https://images.unsplash.com/photo-1578500523703-2212a1f13b28?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'westelm.com', sourceUrl: 'https://www.westelm.com' },
-          { id: 4, name: 'Organic Green Tea Set', category: 'Groceries', price: 25.00, description: 'A curated set of 5 premium organic green teas from around the world.', imageUrl: 'https://images.unsplash.com/photo-1597318181409-cf7273be8249?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'teaforte.com', sourceUrl: 'https://teaforte.com' },
-          { id: 5, name: 'Professional Running Shoes', category: 'Apparel', price: 120.00, description: 'Lightweight and durable running shoes for amateur and pro athletes.', imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ab?auto=format&fit=crop&w=600&q=80', rating: 4.5, imageSource: 'nike.com', sourceUrl: 'https://www.nike.com' },
-          { id: 6, name: 'Smart Home Hub', category: 'Electronics', price: 99.99, description: 'Control all your smart devices from one central, voice-activated hub.', imageUrl: 'https://images.unsplash.com/photo-1565575313325-a1a7f0e637a8?auto=format&fit=crop&w=600&q=80', rating: 4.4, imageSource: 'amazon.com', sourceUrl: 'https://www.amazon.com/smart-home-devices' },
-          { id: 7, name: 'Gourmet Coffee Beans', category: 'Groceries', price: 22.50, description: '1lb bag of single-origin, medium-roast Arabica coffee beans.', imageUrl: 'https://images.unsplash.com/photo-1511920183353-8b2c427c9b5a?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'bluebottlecoffee.com', sourceUrl: 'https://bluebottlecoffee.com' },
-          { id: 8, name: 'Ergonomic Office Chair', category: 'Home Goods', price: 250.00, description: 'Support your back and improve posture with this adjustable ergonomic chair.', imageUrl: 'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'hermanmiller.com', sourceUrl: 'https://www.hermanmiller.com' },
-          { id: 9, name: 'Pleated Blue Loungewear Set', category: 'Apparel', price: 79.99, description: 'A comfortable and stylish two-piece set perfect for relaxing or a casual day out.', imageUrl: 'https://images.unsplash.com/photo-1622380484120-c351aa725c52?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'everlane.com', sourceUrl: 'https://www.everlane.com' },
-          { id: 10, name: 'Latest Flagship Smartphone', category: 'Electronics', price: 1199.00, description: 'Experience cutting-edge technology with the latest smartphone, featuring a pro-grade camera.', imageUrl: 'https://images.unsplash.com/photo-1677353108642-1e531713e33f?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'samsung.com', sourceUrl: 'https://www.samsung.com' },
-          { id: 11, name: 'Minimalist White Desk', category: 'Home Goods', price: 189.50, description: 'A sleek and modern desk, perfect for creating a productive and stylish workspace.', imageUrl: 'https://images.unsplash.com/photo-1593349329304-482a6f8c76fd?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'ikea.com', sourceUrl: 'https://www.ikea.com' },
-          { id: 12, name: 'Essential Makeup Kit', category: 'Beauty', price: 59.99, description: 'A complete set of makeup essentials, including lipstick, mascara, and eyeshadow.', imageUrl: 'https://images.unsplash.com/photo-1512496015851-a90137ba0a43?auto=format&fit=crop&w=600&q=80', rating: 4.5, imageSource: 'sephora.com', sourceUrl: 'https://www.sephora.com' },
-          { id: 13, name: 'Men\'s Daily Grooming Set', category: 'Personal Care', price: 29.99, description: 'All the essentials for a man\'s daily routine, including razor, deodorant, and toothpaste.', imageUrl: 'https://images.unsplash.com/photo-1621607512214-6c349024b33c?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'harrys.com', sourceUrl: 'https://www.harrys.com' },
-          { id: 14, name: 'Kids Toy Playset', category: 'Toys & Games', price: 39.99, description: 'A fun and imaginative playset for kids, featuring a toy car, plane, and more.', imageUrl: 'https://images.unsplash.com/photo-1575362912470-61d440c0345a?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'lego.com', sourceUrl: 'https://www.lego.com' },
-          { id: 15, name: 'Premium Natural Pet Food', category: 'Pet Supplies', price: 45.50, description: 'Healthy and delicious natural food for your beloved dog or cat.', imageUrl: 'https://images.unsplash.com/photo-1589924594954-5282594191c9?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'chewy.com', sourceUrl: 'https://www.chewy.com' },
-          { id: 16, name: 'Portable Bluetooth Speaker', category: 'Electronics', price: 65.00, description: 'Enjoy your music anywhere with this powerful and waterproof portable speaker.', imageUrl: 'https://images.unsplash.com/photo-1589100002543-7ecdacec20f3?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'jbl.com', sourceUrl: 'https://www.jbl.com' },
-          { id: 17, name: 'Eco-Friendly Yoga Mat', category: 'Sports & Fitness', price: 39.99, description: 'A non-slip, eco-friendly mat perfect for yoga, pilates, and floor exercises.', imageUrl: 'https://images.unsplash.com/photo-1591291621164-2c62c410c85c?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'lululemon.com', sourceUrl: 'https://shop.lululemon.com' },
-          { id: 18, name: 'Bestselling Hardcover Novel', category: 'Books', price: 18.99, description: 'Dive into the latest bestselling novel that everyone is talking about.', imageUrl: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'barnesandnoble.com', sourceUrl: 'https://www.barnesandnoble.com' },
-          { id: 19, name: 'Insulated Steel Water Bottle', category: 'Home Goods', price: 24.99, description: 'Keep your drinks cold for 24 hours or hot for 12 with this sleek bottle.', imageUrl: 'https://images.unsplash.com/photo-1602143407151-247e961d21a6?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'hydroflask.com', sourceUrl: 'https://www.hydroflask.com' },
-          { id: 20, name: 'Classic Denim Jacket', category: 'Apparel', price: 89.99, description: 'A versatile and timeless wardrobe staple that pairs with any outfit.', imageUrl: 'https://images.unsplash.com/photo-1604176354204-926873782855?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'levis.com', sourceUrl: 'https://www.levis.com' },
-          { id: 21, name: 'High-Performance Gaming Mouse', category: 'Electronics', price: 75.00, description: 'Gain a competitive edge with this ergonomic, high-precision gaming mouse.', imageUrl: 'https://images.unsplash.com/photo-1615663249893-16353344d642?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'razer.com', sourceUrl: 'https://www.razer.com' },
-          { id: 22, name: 'Luxury Scented Candle Set', category: 'Home Goods', price: 49.50, description: 'A set of three soy wax candles in relaxing lavender, vanilla, and sandalwood scents.', imageUrl: 'https://images.unsplash.com/photo-1614527930412-a7c85866f27b?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'jomalone.com', sourceUrl: 'https://www.jomalone.com' },
-          { id: 23, name: 'Vitamin C Brightening Serum', category: 'Beauty', price: 35.00, description: 'Revitalize your skin and reduce dark spots with this powerful Vitamin C serum.', imageUrl: 'https://images.unsplash.com/photo-1620916566398-39f168a27e20?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'drunkelephant.com', sourceUrl: 'https://www.drunkelephant.com' },
-          { id: 24, name: 'Artisanal Dark Chocolate Bar', category: 'Groceries', price: 8.99, description: 'Indulge in a rich, 72% cacao dark chocolate bar with notes of sea salt.', imageUrl: 'https://images.unsplash.com/photo-1571092482322-a279329b3980?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'godiva.com', sourceUrl: 'https://www.godiva.com' },
-          { id: 25, name: 'Smartwatch with Fitness Tracker', category: 'Electronics', price: 199.99, description: 'Track your fitness goals, receive notifications, and stay connected with this sleek smartwatch.', imageUrl: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'fitbit.com', sourceUrl: 'https://www.fitbit.com' },
-          { id: 26, name: 'Linen Blend Summer Dress', category: 'Apparel', price: 69.99, description: 'Stay cool and stylish in this breathable linen blend dress, perfect for warm weather.', imageUrl: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'zara.com', sourceUrl: 'https://www.zara.com' },
-          { id: 27, name: 'Cast Iron Skillet', category: 'Home Goods', price: 32.00, description: 'Pre-seasoned 12-inch cast iron skillet for all your cooking needs. Heats evenly and lasts a lifetime.', imageUrl: 'https://images.unsplash.com/photo-1582101415810-746373187c53?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'lodgecastiron.com', sourceUrl: 'https://www.lodgecastiron.com' },
-          { id: 28, name: 'Organic Quinoa', category: 'Groceries', price: 12.99, description: '1kg bag of gluten-free, organic white quinoa. A healthy and versatile superfood.', imageUrl: 'https://images.unsplash.com/photo-1590301321494-051f98555ac1?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'bobsredmill.com', sourceUrl: 'https://www.bobsredmill.com' },
-          { id: 29, name: 'Hydrating Face Moisturizer', category: 'Beauty', price: 28.50, description: 'A lightweight, daily moisturizer that provides long-lasting hydration for all skin types.', imageUrl: 'https://images.unsplash.com/photo-1600836109398-3c3dd41a9c14?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'kiehls.com', sourceUrl: 'https://www.kiehls.com' },
-          { id: 30, name: 'Electric Toothbrush', category: 'Personal Care', price: 49.99, description: 'Achieve a superior clean with this electric toothbrush featuring multiple brushing modes.', imageUrl: 'https://images.unsplash.com/photo-1609100746973-5a04732faf55?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'oralb.com', sourceUrl: 'https://oralb.com' },
-          { id: 31, name: 'Wooden Building Blocks Set', category: 'Toys & Games', price: 29.99, description: 'A classic 100-piece set of wooden blocks to inspire creativity and learning in children.', imageUrl: 'https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'melissaanddoug.com', sourceUrl: 'https://www.melissaanddoug.com' },
-          { id: 32, name: 'Interactive Cat Laser Toy', category: 'Pet Supplies', price: 19.99, description: 'Keep your cat entertained for hours with this automatic, rotating laser toy.', imageUrl: 'https://images.unsplash.com/photo-1598287314725-06c3a1112b9a?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'petsafe.net', sourceUrl: 'https://www.petsafe.net' },
-          { id: 33, name: 'Adjustable Dumbbell Set', category: 'Sports & Fitness', price: 159.00, description: 'A space-saving adjustable dumbbell set, perfect for a home gym. Replaces 15 sets of weights.', imageUrl: 'https://images.unsplash.com/photo-1581009137042-c55216867523?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'bowflex.com', sourceUrl: 'https://www.bowflex.com' },
-          { id: 34, name: 'The Great Gatsby by F. Scott Fitzgerald', category: 'Books', price: 12.50, description: 'A timeless American classic exploring themes of wealth, love, and the American Dream.', imageUrl: 'https://images.unsplash.com/photo-1593340578841-3444a991807b?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'penguinrandomhouse.com', sourceUrl: 'https://www.penguinrandomhouse.com' },
-          { id: 35, name: '4K Action Camera', category: 'Electronics', price: 129.99, description: 'Capture your adventures in stunning 4K. Waterproof, durable, and packed with features.', imageUrl: 'https://images.unsplash.com/photo-1517415492808-1f19879942a6?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'gopro.com', sourceUrl: 'https://gopro.com' },
-          { id: 36, name: 'Cashmere Blend Scarf', category: 'Apparel', price: 59.99, description: 'A luxuriously soft cashmere blend scarf to keep you warm and stylish.', imageUrl: 'https://images.unsplash.com/photo-1610901237699-99464522432c?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'jcrew.com', sourceUrl: 'https://www.jcrew.com' },
-          { id: 37, name: 'French Press Coffee Maker', category: 'Home Goods', price: 29.50, description: 'Brew rich, aromatic coffee with this classic 8-cup French press coffee maker.', imageUrl: 'https://images.unsplash.com/photo-1563884073332-d278065b2067?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'bodum.com', sourceUrl: 'https://www.bodum.com' },
-          { id: 38, name: 'Avocado Oil', category: 'Groceries', price: 15.99, description: 'Cold-pressed, extra virgin avocado oil. Perfect for high-heat cooking and salad dressings.', imageUrl: 'https://images.unsplash.com/photo-1607572733022-26fed1a995e8?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'chosenfoods.com', sourceUrl: 'https://chosenfoods.com' },
-          { id: 39, name: 'Charcoal Face Mask', category: 'Beauty', price: 18.00, description: 'A detoxifying charcoal mask that draws out impurities and refines pores for clearer skin.', imageUrl: 'https://images.unsplash.com/photo-1598449033390-de5963f9720c?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'origins.com', sourceUrl: 'https://www.origins.com' },
-          { id: 40, name: 'Beard Grooming Kit', category: 'Personal Care', price: 34.99, description: 'A complete beard care kit with oil, balm, brush, and comb for a healthy, well-groomed beard.', imageUrl: 'https://images.unsplash.com/photo-1621607511858-883a48faf342?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'beardbrand.com', sourceUrl: 'https://www.beardbrand.com' },
-          { id: 41, name: 'Strategy Board Game', category: 'Toys & Games', price: 45.00, description: 'An engaging strategy board game for 2-4 players. Perfect for game nights.', imageUrl: 'https://images.unsplash.com/photo-1611891487122-207c9898c148?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'catan.com', sourceUrl: 'https://www.catan.com' },
-          { id: 42, name: 'Orthopedic Dog Bed', category: 'Pet Supplies', price: 79.99, description: 'A comfortable and supportive orthopedic bed for your dog, especially for senior pets.', imageUrl: 'https://images.unsplash.com/photo-1588012886381-435b7c02b378?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'petfusion.com', sourceUrl: 'https://www.petfusion.com' },
-          { id: 43, name: 'Resistance Bands Set', category: 'Sports & Fitness', price: 22.99, description: 'Set of 5 resistance loop bands for strength training, physical therapy, and home workouts.', imageUrl: 'https://images.unsplash.com/photo-1599580502336-2d8d85f54394?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'theraband.com', sourceUrl: 'https://www.theraband.com' },
-          { id: 44, name: '"Sapiens: A Brief History of Humankind"', category: 'Books', price: 22.00, description: 'Explore the history of our species in this bestselling book by Yuval Noah Harari.', imageUrl: 'https://images.unsplash.com/photo-1589998059171-988d887df646?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'harpercollins.com', sourceUrl: 'https://www.harpercollins.com' },
-          { id: 45, name: 'Portable Power Bank', category: 'Electronics', price: 35.99, description: 'A high-capacity 20,000mAh power bank to charge your devices on the go.', imageUrl: 'https://images.unsplash.com/photo-1588820658330-3135280d4a8e?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'anker.com', sourceUrl: 'https://www.anker.com' },
-          { id: 46, name: 'Wool Blend Peacoat', category: 'Apparel', price: 189.99, description: 'A classic and sophisticated wool blend peacoat for timeless winter style.', imageUrl: 'https://images.unsplash.com/photo-1616258832791-ea4cb58603ad?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'bananarepublic.com', sourceUrl: 'https://bananarepublic.gap.com' },
-          { id: 47, name: 'Air Fryer', category: 'Home Goods', price: 89.00, description: 'Enjoy your favorite fried foods with less oil using this 5.8-quart air fryer.', imageUrl: 'https://images.unsplash.com/photo-1593361048443-579549f30cdc?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'instantbrands.com', sourceUrl: 'https://www.instantbrands.com' },
-          { id: 48, name: 'Organic Maple Syrup', category: 'Groceries', price: 14.50, description: 'Grade A, dark robust pure maple syrup. Perfect for pancakes, waffles, and baking.', imageUrl: 'https://images.unsplash.com/photo-1616032398599-281b37a436a5?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'coombsfamilyfarms.com', sourceUrl: 'https://www.coombsfamilyfarms.com' },
-          { id: 49, name: 'Dry Shampoo', category: 'Beauty', price: 14.00, description: 'Absorbs oil and refreshes hair between washes, leaving it looking clean and voluminous.', imageUrl: 'https://images.unsplash.com/photo-1556911969-52dd8638ac8a?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'livingproof.com', sourceUrl: 'https://www.livingproof.com' },
-          { id: 50, name: 'Natural Deodorant', category: 'Personal Care', price: 12.00, description: 'An aluminum-free natural deodorant that provides long-lasting odor protection.', imageUrl: 'https://images.unsplash.com/photo-1620916715298-83f1f5933863?auto=format&fit=crop&w=600&q=80', rating: 4.5, imageSource: 'nativecos.com', sourceUrl: 'https://www.nativecos.com' },
-          { id: 51, name: 'Remote Control Drone', category: 'Toys & Games', price: 79.99, description: 'A beginner-friendly drone with a 1080p camera, perfect for capturing aerial photos and videos.', imageUrl: 'https://images.unsplash.com/photo-1527977966376-903b4b57c1b3?auto=format&fit=crop&w=600&q=80', rating: 4.5, imageSource: 'dji.com', sourceUrl: 'https://www.dji.com' },
-          { id: 52, name: 'Pet Grooming Gloves', category: 'Pet Supplies', price: 15.99, description: 'Gently de-shed and groom your pet with these effective and easy-to-use grooming gloves.', imageUrl: 'https://images.unsplash.com/photo-1597858605329-a75b3110218c?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'handsongloves.com', sourceUrl: 'https://handsongloves.com' },
-          { id: 53, name: 'Smart Jump Rope', category: 'Sports & Fitness', price: 39.99, description: 'A smart jump rope that tracks your workout data and syncs with a fitness app.', imageUrl: 'https://images.unsplash.com/photo-1598262335999-4a29a67a3f8f?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'tangramfactory.com', sourceUrl: 'https://tangramfactory.com' },
-          { id: 54, name: '"The Alchemist" by Paulo Coelho', category: 'Books', price: 13.99, description: 'An inspiring modern classic about following your dreams.', imageUrl: 'https://images.unsplash.com/photo-1592496431122-2349e0fbc666?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'paulocoelhoblog.com', sourceUrl: 'https://paulocoelhoblog.com' },
-          { id: 55, name: 'Mechanical Keyboard', category: 'Electronics', price: 119.00, description: 'A tactile and responsive mechanical keyboard for an enhanced typing and gaming experience.', imageUrl: 'https://images.unsplash.com/photo-1618384887924-2c8427a1c943?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'daskeyboard.com', sourceUrl: 'https://www.daskeyboard.com' },
-          { id: 56, name: 'Classic Trench Coat', category: 'Apparel', price: 220.00, description: 'An iconic and versatile trench coat, perfect for transitional weather.', imageUrl: 'https://images.unsplash.com/photo-1590328701988-b733794b918f?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'burberry.com', sourceUrl: 'https://www.burberry.com' },
-          { id: 57, name: 'Espresso Machine', category: 'Home Goods', price: 299.99, description: 'A semi-automatic espresso machine to craft barista-quality coffee drinks at home.', imageUrl: 'https://images.unsplash.com/photo-1565452344012-705c7a3a5f4e?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'breville.com', sourceUrl: 'https://www.breville.com' },
-          { id: 58, name: 'Balsamic Glaze', category: 'Groceries', price: 9.99, description: 'A rich and tangy balsamic glaze to drizzle over salads, meats, and desserts.', imageUrl: 'https://images.unsplash.com/photo-1625944230138-1f1f7d1f9d2d?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'delallo.com', sourceUrl: 'https://www.delallo.com' },
-          { id: 59, name: 'Retinol Night Cream', category: 'Beauty', price: 45.00, description: 'A powerful retinol cream that works overnight to reduce the appearance of fine lines and wrinkles.', imageUrl: 'https://images.unsplash.com/photo-1620916723234-a035a9d15024?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'rocskincare.com', sourceUrl: 'https://www.rocskincare.com' },
-          { id: 60, name: 'Silk Sleep Mask', category: 'Personal Care', price: 25.00, description: 'Block out light and protect your skin with this luxurious 100% pure silk sleep mask.', imageUrl: 'https://images.unsplash.com/photo-1612188443257-d345c54316d8?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'slipsilkpillowcase.com', sourceUrl: 'https://www.slipsilkpillowcase.com' },
-          { id: 61, name: '3D Wooden Puzzle', category: 'Toys & Games', price: 24.99, description: 'A challenging and rewarding 3D wooden puzzle that becomes a beautiful model once assembled.', imageUrl: 'https://images.unsplash.com/photo-1601642247348-4389e4720613?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'rokr.com', sourceUrl: 'https://www.rokr.com' },
-          { id: 62, name: 'Slow Feeder Dog Bowl', category: 'Pet Supplies', price: 18.99, description: 'Help your dog eat at a healthier pace with this interactive slow feeder bowl.', imageUrl: 'https://images.unsplash.com/photo-1591781803518-e37a44b36d2a?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'outwardhound.com', sourceUrl: 'https://outwardhound.com' },
-          { id: 63, name: 'Kettlebell', category: 'Sports & Fitness', price: 49.99, description: 'A versatile 35 lb cast iron kettlebell for strength and conditioning workouts.', imageUrl: 'https://images.unsplash.com/photo-1574680178425-c2d3c4b1f055?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'roguefitness.com', sourceUrl: 'https://www.roguefitness.com' },
-          { id: 64, name: '"Dune" by Frank Herbert', category: 'Books', price: 15.99, description: 'The groundbreaking science fiction epic of politics, religion, and power on a desert planet.', imageUrl: 'https://images.unsplash.com/photo-1626242414259-b2361a41f6e2?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'acebooks.com', sourceUrl: 'https://www.penguinrandomhouse.com/imprints/ace' },
-          { id: 65, name: 'Wireless Charging Pad', category: 'Electronics', price: 29.99, description: 'A fast and convenient wireless charging pad for all Qi-enabled smartphones and devices.', imageUrl: 'https://images.unsplash.com/photo-1545239176-8573450a8b23?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'belkin.com', sourceUrl: 'https://www.belkin.com' },
-          { id: 66, name: 'Leather Chelsea Boots', category: 'Apparel', price: 150.00, description: 'Versatile and stylish leather Chelsea boots that can be dressed up or down.', imageUrl: 'https://images.unsplash.com/photo-1603808033192-082d6919d3e1?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'thursdayboots.com', sourceUrl: 'https://thursdayboots.com' },
-          { id: 67, name: 'Bamboo Cutting Board Set', category: 'Home Goods', price: 27.99, description: 'A set of three durable and eco-friendly bamboo cutting boards in various sizes.', imageUrl: 'https://images.unsplash.com/photo-1623428236891-1b9f71584c3c?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'totallybamboo.com', sourceUrl: 'https://www.totallybamboo.com' },
-          { id: 68, name: 'Cold Brew Coffee Concentrate', category: 'Groceries', price: 19.99, description: 'A smooth and bold cold brew concentrate. Just add water or milk.', imageUrl: 'https://images.unsplash.com/photo-1579781439971-464243a7520e?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'gradysgoods.com', sourceUrl: 'https://www.gradysgoods.com' },
-          { id: 69, name: 'Clay Pomade for Hair', category: 'Beauty', price: 22.00, description: 'A high-hold, matte finish clay pomade for styling hair with a natural look.', imageUrl: 'https://images.unsplash.com/photo-1590159491694-98780346b0ec?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'baxterofcalifornia.com', sourceUrl: 'https://www.baxterofcalifornia.com' },
-          { id: 70, name: 'Floss Picks', category: 'Personal Care', price: 9.99, description: 'Mint-flavored floss picks that make flossing easy and convenient. Pack of 150.', imageUrl: 'https://images.unsplash.com/photo-1607008892197-39b1a0528469?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'plackers.com', sourceUrl: 'https://www.plackers.com' },
-          { id: 71, name: 'Magnetic Tiles Building Set', category: 'Toys & Games', price: 59.99, description: 'A colorful set of magnetic tiles for open-ended, creative construction play.', imageUrl: 'https://images.unsplash.com/photo-1602781109986-168a287aa41e?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'magnatiles.com', sourceUrl: 'https://www.magnatiles.com' },
-          { id: 72, name: 'Poop Bags', category: 'Pet Supplies', price: 14.99, description: 'Leak-proof and lavender-scented pet waste bags. 270 bags per box.', imageUrl: 'https://images.unsplash.com/photo-1616110058934-45a7c2d119a2?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'earthrated.com', sourceUrl: 'https://earthrated.com' },
-          { id: 73, name: 'Foam Roller', category: 'Sports & Fitness', price: 24.99, description: 'A high-density foam roller for muscle recovery, physical therapy, and deep tissue massage.', imageUrl: 'https://images.unsplash.com/photo-1579758629938-03607ccdbaba?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'triggerpoint.com', sourceUrl: 'https://www.triggerpoint.com' },
-          { id: 74, name: '"Atomic Habits" by James Clear', category: 'Books', price: 18.00, description: 'An easy and proven way to build good habits and break bad ones.', imageUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'jamesclear.com', sourceUrl: 'https://jamesclear.com/atomic-habits' },
-          { id: 75, name: 'USB-C Hub', category: 'Electronics', price: 49.99, description: 'A 7-in-1 USB-C hub with HDMI, SD card readers, and multiple USB ports for laptops.', imageUrl: 'https://images.unsplash.com/photo-1588665809885-04423a73c26d?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'satechi.net', sourceUrl: 'https://satechi.net' },
-          { id: 76, name: 'Performance Polo Shirt', category: 'Apparel', price: 45.00, description: 'A moisture-wicking and breathable polo shirt, perfect for golf or casual wear.', imageUrl: 'https://images.unsplash.com/photo-1593710723483-9b343bf41b3a?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'underarmour.com', sourceUrl: 'https://www.underarmour.com' },
-          { id: 77, name: 'Electric Kettle', category: 'Home Goods', price: 55.00, description: 'A stylish and fast-boiling electric kettle with temperature control for tea and coffee lovers.', imageUrl: 'https://images.unsplash.com/photo-1622329983935-37335aced790?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'fellowproducts.com', sourceUrl: 'https://fellowproducts.com' },
-          { id: 78, name: 'Truffle Hot Sauce', category: 'Groceries', price: 17.99, description: 'A gourmet hot sauce infused with black truffle for a unique and luxurious flavor.', imageUrl: 'https://images.unsplash.com/photo-1625938144952-cb2646272583?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'truff.com', sourceUrl: 'https://www.truff.com' },
-          { id: 79, name: 'Microfiber Hair Towel', category: 'Beauty', price: 19.99, description: 'A super-absorbent microfiber towel that reduces hair drying time and minimizes frizz.', imageUrl: 'https://images.unsplash.com/photo-1580882782703-51888a728b9c?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'aquishair.com', sourceUrl: 'https://www.aquishair.com' },
-          { id: 80, name: 'Travel Toiletry Bag', category: 'Personal Care', price: 29.99, description: 'A spacious and water-resistant hanging toiletry bag to keep your essentials organized.', imageUrl: 'https://images.unsplash.com/photo-1607595232230-ac92c28656d3?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'peakdesign.com', sourceUrl: 'https://www.peakdesign.com' },
-          { id: 81, name: 'Jigsaw Puzzle (1000 Pieces)', category: 'Toys & Games', price: 19.99, description: 'A beautiful and challenging 1000-piece jigsaw puzzle featuring a vibrant landscape.', imageUrl: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'ravensburger.us', sourceUrl: 'https://www.ravensburger.us' },
-          { id: 82, name: 'Water Filter Pitcher', category: 'Home Goods', price: 34.99, description: 'Removes chlorine and other impurities for cleaner, great-tasting water.', imageUrl: 'https://images.unsplash.com/photo-1606501118342-a3b0b6a3d6a2?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'brita.com', sourceUrl: 'https://www.brita.com' },
-          { id: 83, name: 'Hiking Backpack', category: 'Sports & Fitness', price: 129.99, description: 'A 50L durable and comfortable backpack for multi-day hiking and camping trips.', imageUrl: 'https://images.unsplash.com/photo-1558611848-8c199f35b2e6?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'osprey.com', sourceUrl: 'https://www.osprey.com' },
-          { id: 84, name: 'Webcam with Ring Light', category: 'Electronics', price: 69.99, description: 'A 1080p webcam with a built-in ring light for professional-looking video calls and streaming.', imageUrl: 'https://images.unsplash.com/photo-1617316336331-15552d7e1f44?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'razer.com', sourceUrl: 'https://www.razer.com' },
-          { id: 85, name: 'Linen Sheet Set', category: 'Home Goods', price: 179.00, description: 'A queen-size set of soft, breathable, and durable 100% linen sheets.', imageUrl: 'https://images.unsplash.com/photo-1616627781431-d8a4e1b5c1a1?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'brooklinen.com', sourceUrl: 'https://www.brooklinen.com' },
-          { id: 86, name: 'Chunky Knit Sweater', category: 'Apparel', price: 89.50, description: 'A cozy and stylish oversized chunky knit sweater made from a soft wool blend.', imageUrl: 'https://images.unsplash.com/photo-1613953833895-a50a1c94aa6a?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'madewell.com', sourceUrl: 'https://www.madewell.com' },
-          { id: 87, name: 'Pour-Over Coffee Dripper', category: 'Home Goods', price: 24.99, description: 'A ceramic pour-over coffee dripper for a clean, flavorful, and handcrafted brew.', imageUrl: 'https://images.unsplash.com/photo-1545665225-b23b99e4d45e?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'hario-official.jp', sourceUrl: 'https://hario-official.jp/en/' },
-          { id: 88, name: 'Organic Coconut Oil', category: 'Groceries', price: 11.99, description: 'Unrefined, cold-pressed, virgin coconut oil. Ideal for cooking, baking, and skincare.', imageUrl: 'https://images.unsplash.com/photo-1590486804186-455b32f2b311?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'nutiva.com', sourceUrl: 'https://www.nutiva.com' },
-          { id: 89, name: 'Facial Cleansing Brush', category: 'Beauty', price: 99.00, description: 'A gentle yet effective sonic facial cleansing brush for deep cleaning and exfoliation.', imageUrl: 'https://images.unsplash.com/photo-1590439428575-b873525a0750?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'foreo.com', sourceUrl: 'https://www.foreo.com' },
-          { id: 90, name: 'Electric Shaver', category: 'Personal Care', price: 79.99, description: 'A wet and dry electric shaver that provides a close, comfortable shave with less irritation.', imageUrl: 'https://images.unsplash.com/photo-1588099711654-e7b39a4e414c?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'philips.com', sourceUrl: 'https://www.philips.com' },
-          { id: 91, name: 'Play-Doh Variety Pack', category: 'Toys & Games', price: 14.99, description: 'A 24-pack of assorted color modeling compound for endless creative fun.', imageUrl: 'https://images.unsplash.com/photo-1612117180015-b779a1804b8a?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'hasbro.com', sourceUrl: 'https://shop.hasbro.com/en-us/play-doh' },
-          { id: 92, name: 'Car Phone Mount', category: 'Automotive', price: 24.99, description: 'A sturdy and adjustable car phone mount for safe, hands-free navigation.', imageUrl: 'https://images.unsplash.com/photo-1613280145260-6816a7e2b7b9?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'iottie.com', sourceUrl: 'https://www.iottie.com' },
-          { id: 93, name: 'Gardening Tool Set', category: 'Garden & Outdoor', price: 39.99, description: 'A complete set of essential gardening tools with a convenient carrying case.', imageUrl: 'https://images.unsplash.com/photo-1617574213554-e06b3c21a1f1?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'fiskars.com', sourceUrl: 'https://www.fiskars.com' },
-          { id: 94, name: 'Gold Hoop Earrings', category: 'Jewelry', price: 85.00, description: 'A pair of classic and elegant 14k gold-plated hoop earrings.', imageUrl: 'https://images.unsplash.com/photo-1611652033959-8a52dc04a2a1?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'mejuri.com', sourceUrl: 'https://mejuri.com' },
-          { id: 95, name: 'Minimalist Wrist Watch', category: 'Watches', price: 135.00, description: 'A sleek and modern unisex watch with a stainless steel case and leather strap.', imageUrl: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'danielwellington.com', sourceUrl: 'https://www.danielwellington.com' },
-          { id: 96, name: 'Weighted Blanket', category: 'Home Goods', price: 119.00, description: 'A 15 lb weighted blanket designed to reduce stress and promote restful sleep.', imageUrl: 'https://images.unsplash.com/photo-1598911912807-6a1b2414f2ea?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'bearaby.com', sourceUrl: 'https://bearaby.com' },
-          { id: 97, name: 'Digital Kitchen Scale', category: 'Home Goods', price: 19.99, description: 'A precise digital food scale for accurate measurements in baking and cooking.', imageUrl: 'https://images.unsplash.com/photo-1557388279-0821586a1a5a?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'oxo.com', sourceUrl: 'https://www.oxo.com' },
-          { id: 98, name: 'Travel Mug', category: 'Home Goods', price: 29.99, description: 'An insulated stainless steel travel mug that keeps drinks hot or cold for hours.', imageUrl: 'https://images.unsplash.com/photo-1583594247908-01e48352528c?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'yeti.com', sourceUrl: 'https://www.yeti.com' },
-          { id: 99, name: 'Blender', category: 'Home Goods', price: 129.99, description: 'A high-speed blender for smoothies, soups, and sauces, with a powerful 1200-watt motor.', imageUrl: 'https://images.unsplash.com/photo-1589301773993-d49c6b6d5b9d?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'vitamix.com', sourceUrl: 'https://www.vitamix.com' },
-          { id: 100, name: 'Cocktail Shaker Set', category: 'Home Goods', price: 49.99, description: 'A complete bartender kit with a shaker, jigger, strainer, and more for crafting cocktails.', imageUrl: 'https://images.unsplash.com/photo-1556881123-45a496c14e0f?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'cocktailkingdom.com', sourceUrl: 'https://www.cocktailkingdom.com' },
-          { id: 101, name: 'Air Purifier', category: 'Home Goods', price: 149.99, description: 'A HEPA air purifier that captures allergens, pet dander, and dust for cleaner air.', imageUrl: 'https://images.unsplash.com/photo-1623326581229-3c7d6c5c7d2c?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'levoit.com', sourceUrl: 'https://www.levoit.com' },
-          { id: 102, name: 'Electric Hand Mixer', category: 'Home Goods', price: 39.99, description: 'A powerful and lightweight electric hand mixer with multiple speed settings.', imageUrl: 'https://images.unsplash.com/photo-1589711204233-5c8e401b443c?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'kitchenaid.com', sourceUrl: 'https://www.kitchenaid.com' },
-          { id: 103, name: 'Robot Vacuum', category: 'Home Goods', price: 299.99, description: 'A smart robot vacuum with Wi-Fi connectivity and mapping technology for automated cleaning.', imageUrl: 'https://images.unsplash.com/photo-1620338349885-05531b2b8c2d?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'irobot.com', sourceUrl: 'https://www.irobot.com' },
-          { id: 104, name: 'Digital Photo Frame', category: 'Electronics', price: 129.99, description: 'Share photos and videos instantly from your phone to this Wi-Fi connected digital frame.', imageUrl: 'https://images.unsplash.com/photo-1611299449175-d51e7a57a5e8?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'aura-frames.com', sourceUrl: 'https://auraframes.com' },
-          { id: 105, name: 'Noise Cancelling Earbuds', category: 'Electronics', price: 179.00, description: 'Compact and comfortable true wireless earbuds with elite noise cancellation.', imageUrl: 'https://images.unsplash.com/photo-1606220584373-c2242171806b?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'sony.com', sourceUrl: 'https://www.sony.com' },
-          { id: 106, name: 'Gaming Headset', category: 'Electronics', price: 99.99, description: 'A surround sound gaming headset with a noise-cancelling microphone for immersive gameplay.', imageUrl: 'https://images.unsplash.com/photo-1585144860161-11a3b838fdf3?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'steelseries.com', sourceUrl: 'https://steelseries.com' },
-          { id: 107, name: 'Streaming Media Player', category: 'Electronics', price: 49.99, description: 'Stream your favorite shows and movies in 4K HDR with this easy-to-use media player.', imageUrl: 'https://images.unsplash.com/photo-1616499351044-7243c36c051a?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'roku.com', sourceUrl: 'https://www.roku.com' },
-          { id: 108, name: 'Portable SSD', category: 'Electronics', price: 129.99, description: 'A fast and durable 1TB portable solid-state drive for file transfers and backups.', imageUrl: 'https://images.unsplash.com/photo-1593642702821-c8642878a1f7?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'samsung.com', sourceUrl: 'https://www.samsung.com' },
-          { id: 109, name: 'Turntable', category: 'Electronics', price: 149.00, description: 'A belt-drive Bluetooth turntable to enjoy your vinyl collection with modern convenience.', imageUrl: 'https://images.unsplash.com/photo-1516280440316-96b484aa40d7?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'audio-technica.com', sourceUrl: 'https://www.audio-technica.com' },
-          { id: 110, name: 'Gooseneck Desk Lamp', category: 'Home Goods', price: 34.99, description: 'A flexible LED desk lamp with adjustable brightness levels and color temperatures.', imageUrl: 'https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'taotronics.com', sourceUrl: 'https://www.taotronics.com' },
-          { id: 111, name: 'Essential Oil Diffuser', category: 'Home Goods', price: 39.99, description: 'An ultrasonic aromatherapy diffuser that fills your space with natural fragrance.', imageUrl: 'https://images.unsplash.com/photo-1620138342137-2cf39b611357?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'vitruvi.com', sourceUrl: 'https://vitruvi.com' },
-          { id: 112, name: 'Fleece Throw Blanket', category: 'Home Goods', price: 29.99, description: 'A soft and cozy fleece throw blanket, perfect for cuddling on the couch.', imageUrl: 'https://images.unsplash.com/photo-1616627781431-d8a4e1b5c1a1?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'llbean.com', sourceUrl: 'https://www.llbean.com' },
-          { id: 113, name: 'Tire Inflator', category: 'Automotive', price: 49.99, description: 'A portable air compressor and tire inflator for your car, with an auto-shutoff feature.', imageUrl: 'https://images.unsplash.com/photo-1624614227944-77818ac557f9?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'epauto.com', sourceUrl: 'http://www.epauto.com' },
-          { id: 114, name: 'Car Trunk Organizer', category: 'Automotive', price: 34.99, description: 'A heavy-duty, collapsible organizer to keep your car trunk neat and tidy.', imageUrl: 'https://images.unsplash.com/photo-1563299796-b729d0af58a5?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'drive-auto.com', sourceUrl: 'https://drive-auto.com' },
-          { id: 115, 'name': 'Windproof Travel Umbrella', 'category': 'Accessories', 'price': 24.99, 'description': 'A compact and durable windproof umbrella, perfect for travel.', 'imageUrl': 'https://images.unsplash.com/photo-1542065357-8178a8a474be?auto=format&fit=crop&w=600&q=80', 'rating': 4.7, 'imageSource': 'totes.com', 'sourceUrl': 'https://www.totes.com' },
-          { id: 116, 'name': 'Leather Belt', 'category': 'Apparel', 'price': 49.50, 'description': 'A classic and versatile full-grain leather belt for any occasion.', 'imageUrl': 'https://images.unsplash.com/photo-1620835157245-568ea4b26a6c?auto=format&fit=crop&w=600&q=80', 'rating': 4.8, 'imageSource': 'shinola.com', 'sourceUrl': 'https://www.shinola.com' },
-          { id: 117, 'name': 'Athletic Crew Socks', 'category': 'Apparel', 'price': 18.00, 'description': 'A 6-pack of cushioned, moisture-wicking crew socks for sports and everyday wear.', 'imageUrl': 'https://images.unsplash.com/photo-1605552258713-d305611598f4?auto=format&fit=crop&w=600&q=80', 'rating': 4.7, 'imageSource': 'bombas.com', 'sourceUrl': 'https://www.bombas.com' },
-          { id: 118, 'name': 'Classic Aviator Sunglasses', 'category': 'Accessories', 'price': 150.00, 'description': 'Timeless aviator sunglasses with polarized lenses for ultimate UV protection.', 'imageUrl': 'https://images.unsplash.com/photo-1577803645773-f144005fb2cb?auto=format&fit=crop&w=600&q=80', 'rating': 4.8, 'imageSource': 'ray-ban.com', 'sourceUrl': 'https://www.ray-ban.com' },
-          { id: 119, 'name': 'Canvas Backpack', 'category': 'Accessories', 'price': 79.99, 'description': 'A durable and stylish canvas backpack with a laptop compartment and multiple pockets.', 'imageUrl': 'https://images.unsplash.com/photo-1553062407-98eeb68c6a62?auto=format&fit=crop&w=600&q=80', 'rating': 4.7, 'imageSource': 'herschel.com', 'sourceUrl': 'https://herschel.com' },
-          { id: 120, 'name': 'Outdoor String Lights', 'category': 'Garden & Outdoor', 'price': 49.99, 'description': 'Weatherproof, shatterproof LED string lights to create a warm and inviting outdoor atmosphere.', 'imageUrl': 'https://images.unsplash.com/photo-1504221507732-00566b36916a?auto=format&fit=crop&w=600&q=80', 'rating': 4.8, 'imageSource': 'brightech.com', 'sourceUrl': 'https://brightech.com' },
-          { id: 121, 'name': 'Hammock with Stand', 'category': 'Garden & Outdoor', 'price': 129.99, 'description': 'A comfortable and sturdy double hammock with a space-saving steel stand.', 'imageUrl': 'https://images.unsplash.com/photo-1598300181053-4e4b5242d5e3?auto=format&fit=crop&w=600&q=80', 'rating': 4.7, 'imageSource': 'viverehammocks.com', 'sourceUrl': 'https://www.viverehammocks.com' },
-          { id: 122, 'name': 'Fire Pit', 'category': 'Garden & Outdoor', 'price': 149.00, 'description': 'A wood-burning fire pit for cozy evenings in your backyard.', 'imageUrl': 'https://images.unsplash.com/photo-1598148293521-1895a38a3a03?auto=format&fit=crop&w=600&q=80', 'rating': 4.8, 'imageSource': 'solostove.com', 'sourceUrl': 'https://www.solostove.com' },
-          { id: 123, 'name': 'Bird Feeder', 'category': 'Garden & Outdoor', 'price': 29.99, 'description': 'A squirrel-proof bird feeder to attract a variety of wild birds to your garden.', 'imageUrl': 'https://images.unsplash.com/photo-1558296343-69e0b178d8a7?auto=format&fit=crop&w=600&q=80', 'rating': 4.6, 'imageSource': 'droll-yankees.com', 'sourceUrl': 'https://drollyankees.com' },
-          { id: 124, 'name': 'Portable Propane Grill', 'category': 'Garden & Outdoor', 'price': 199.99, 'description': 'A compact and powerful portable gas grill for tailgating, camping, and small patios.', 'imageUrl': 'https://images.unsplash.com/photo-1601805991336-114a844510a7?auto=format&fit=crop&w=600&q=80', 'rating': 4.7, 'imageSource': 'weber.com', 'sourceUrl': 'https://www.weber.com' }
+          { id: 1, name: 'Classic Leather Jacket', category: 'Apparel', price: 11999, description: 'A timeless leather jacket for a sleek, modern look. Perfect for all seasons.', imageUrl: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'allsaints.com', sourceUrl: 'https://www.allsaints.com' },
+          { id: 2, name: 'Wireless Bluetooth Headphones', category: 'Electronics', price: 7199, description: 'High-fidelity sound with 20-hour battery life and noise-cancellation.', imageUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'bose.com', sourceUrl: 'https://www.bose.com' },
+          { id: 3, name: 'Modern Ceramic Vase', category: 'Home Goods', price: 2760, description: 'Minimalist ceramic vase to add a touch of elegance to any room.', imageUrl: 'https://images.unsplash.com/photo-1578500523703-2212a1f13b28?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'westelm.com', sourceUrl: 'https://www.westelm.com' },
+          { id: 4, name: 'Organic Green Tea Set', category: 'Groceries', price: 2000, description: 'A curated set of 5 premium organic green teas from around the world.', imageUrl: 'https://images.unsplash.com/photo-1597318181409-cf7273be8249?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'teaforte.com', sourceUrl: 'https://teaforte.com' },
+          { id: 5, name: 'Professional Running Shoes', category: 'Apparel', price: 9600, description: 'Lightweight and durable running shoes for amateur and pro athletes.', imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ab?auto=format&fit=crop&w=600&q=80', rating: 4.5, imageSource: 'nike.com', sourceUrl: 'https://www.nike.com' },
+          { id: 6, name: 'Smart Home Hub', category: 'Electronics', price: 7999, description: 'Control all your smart devices from one central, voice-activated hub.', imageUrl: 'https://images.unsplash.com/photo-1565575313325-a1a7f0e637a8?auto=format&fit=crop&w=600&q=80', rating: 4.4, imageSource: 'amazon.com', sourceUrl: 'https://www.amazon.com/smart-home-devices' },
+          { id: 7, name: 'Gourmet Coffee Beans', category: 'Groceries', price: 1800, description: '1lb bag of single-origin, medium-roast Arabica coffee beans.', imageUrl: 'https://images.unsplash.com/photo-1511920183353-8b2c427c9b5a?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'bluebottlecoffee.com', sourceUrl: 'https://bluebottlecoffee.com' },
+          { id: 8, name: 'Ergonomic Office Chair', category: 'Home Goods', price: 20000, description: 'Support your back and improve posture with this adjustable ergonomic chair.', imageUrl: 'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'hermanmiller.com', sourceUrl: 'https://www.hermanmiller.com' },
+          { id: 9, name: 'Pleated Blue Loungewear Set', category: 'Apparel', price: 6399, description: 'A comfortable and stylish two-piece set perfect for relaxing or a casual day out.', imageUrl: 'https://images.unsplash.com/photo-1622380484120-c351aa725c52?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'everlane.com', sourceUrl: 'https://www.everlane.com' },
+          { id: 10, name: 'Latest Flagship Smartphone', category: 'Electronics', price: 95920, description: 'Experience cutting-edge technology with the latest smartphone, featuring a pro-grade camera.', imageUrl: 'https://images.unsplash.com/photo-1677353108642-1e531713e33f?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'samsung.com', sourceUrl: 'https://www.samsung.com' },
+          { id: 11, name: 'Minimalist White Desk', category: 'Home Goods', price: 15160, description: 'A sleek and modern desk, perfect for creating a productive and stylish workspace.', imageUrl: 'https://images.unsplash.com/photo-1593349329304-482a6f8c76fd?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'ikea.com', sourceUrl: 'https://www.ikea.com' },
+          { id: 12, name: 'Essential Makeup Kit', category: 'Beauty', price: 4799, description: 'A complete set of makeup essentials, including lipstick, mascara, and eyeshadow.', imageUrl: 'https://images.unsplash.com/photo-1512496015851-a90137ba0a43?auto=format&fit=crop&w=600&q=80', rating: 4.5, imageSource: 'sephora.com', sourceUrl: 'https://www.sephora.com' },
+          { id: 13, name: 'Men\'s Daily Grooming Set', category: 'Personal Care', price: 2399, description: 'All the essentials for a man\'s daily routine, including razor, deodorant, and toothpaste.', imageUrl: 'https://images.unsplash.com/photo-1621607512214-6c349024b33c?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'harrys.com', sourceUrl: 'https://www.harrys.com' },
+          { id: 14, name: 'Kids Toy Playset', category: 'Toys & Games', price: 3199, description: 'A fun and imaginative playset for kids, featuring a toy car, plane, and more.', imageUrl: 'https://images.unsplash.com/photo-1575362912470-61d440c0345a?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'lego.com', sourceUrl: 'https://www.lego.com' },
+          { id: 15, name: 'Premium Natural Pet Food', category: 'Pet Supplies', price: 3640, description: 'Healthy and delicious natural food for your beloved dog or cat.', imageUrl: 'https://images.unsplash.com/photo-1589924594954-5282594191c9?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'chewy.com', sourceUrl: 'https://www.chewy.com' },
+          { id: 16, name: 'Portable Bluetooth Speaker', category: 'Electronics', price: 5200, description: 'Enjoy your music anywhere with this powerful and waterproof portable speaker.', imageUrl: 'https://images.unsplash.com/photo-1589100002543-7ecdacec20f3?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'jbl.com', sourceUrl: 'https://www.jbl.com' },
+          { id: 17, name: 'Eco-Friendly Yoga Mat', category: 'Sports & Fitness', price: 3199, description: 'A non-slip, eco-friendly mat perfect for yoga, pilates, and floor exercises.', imageUrl: 'https://images.unsplash.com/photo-1591291621164-2c62c410c85c?auto=format&fit=crop&w=600&q=80', rating: 4.8, imageSource: 'lululemon.com', sourceUrl: 'https://shop.lululemon.com' },
+          { id: 18, name: 'Bestselling Hardcover Novel', category: 'Books', price: 1519, description: 'Dive into the latest bestselling novel that everyone is talking about.', imageUrl: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=600&q=80', rating: 4.9, imageSource: 'barnesandnoble.com', sourceUrl: 'https://www.barnesandnoble.com' },
+          { id: 19, name: 'Insulated Steel Water Bottle', category: 'Home Goods', price: 1999, description: 'Keep your drinks cold for 24 hours or hot for 12 with this sleek bottle.', imageUrl: 'https://images.unsplash.com/photo-1602143407151-247e961d21a6?auto=format&fit=crop&w=600&q=80', rating: 4.7, imageSource: 'hydroflask.com', sourceUrl: 'https://www.hydroflask.com' },
+          { id: 20, name: 'Classic Denim Jacket', category: 'Apparel', price: 7199, description: 'A versatile and timeless wardrobe staple that pairs with any outfit.', imageUrl: 'https://images.unsplash.com/photo-1604176354204-926873782855?auto=format&fit=crop&w=600&q=80', rating: 4.6, imageSource: 'levis.com', sourceUrl: 'https://www.levis.com' },
         ];
 
         // --- GLOBAL STATE MANAGEMENT ---
@@ -280,7 +173,49 @@
                 this.render();
             },
 
-            // --- Order Logic ---
+            // --- Payment & Order Logic ---
+            initiatePayment(orderDetails) {
+                const cartTotal = this.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                const totalInPaise = cartTotal * 100; // Razorpay requires amount in the smallest currency unit
+
+                const options = {
+                    "key": "YOUR_KEY_ID", // <-- IMPORTANT: Replace with your Razorpay Key ID
+                    "amount": totalInPaise,
+                    "currency": "INR",
+                    "name": "Shopify",
+                    "description": "E-Commerce Transaction",
+                    "image": "https://cdn.shopify.com/shopify-marketing_assets/static/shopify-favicon.png", // A sample logo
+                    "handler": (response) => {
+                        // This function is called on successful payment
+                        console.log("Payment successful:", response);
+                        const fullOrderDetails = {
+                            ...orderDetails,
+                            paymentId: response.razorpay_payment_id
+                        };
+                        this.placeOrder(fullOrderDetails);
+                    },
+                    "prefill": {
+                        "name": orderDetails.name,
+                        "email": orderDetails.email,
+                    },
+                    "notes": {
+                        "address": orderDetails.address
+                    },
+                    "theme": {
+                        "color": "#14b8a6" // Teal color to match the site theme
+                    }
+                };
+
+                const rzp = new Razorpay(options);
+
+                rzp.on('payment.failed', (response) => {
+                    console.error("Payment failed:", response);
+                    this.showToast(`Payment Failed: ${response.error.description}`, true);
+                });
+
+                rzp.open();
+            },
+
             placeOrder(orderDetails) {
                 const cartTotal = this.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
                 const newOrder = {
@@ -288,7 +223,7 @@
                     date: new Date().toLocaleDateString(),
                     items: [...this.cart],
                     total: cartTotal,
-                    ...orderDetails
+                    ...orderDetails // Contains name, email, address, and paymentId
                 };
                 this.orders = [newOrder, ...this.orders];
                 this.cart = [];
@@ -317,14 +252,14 @@
             },
 
             // --- UI Helpers ---
-            showToast(message) {
+            showToast(message, isError = false) {
                 const toast = document.createElement('div');
-                toast.className = 'fixed bottom-5 right-5 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg animate-fade-in-out z-50';
+                toast.className = `fixed bottom-5 right-5 text-white py-2 px-4 rounded-lg shadow-lg animate-fade-in-out z-50 ${isError ? 'bg-red-500' : 'bg-green-500'}`;
                 toast.textContent = message;
                 document.body.appendChild(toast);
                 setTimeout(() => {
                     toast.remove();
-                }, 3000);
+                }, 4000);
             },
             
             // --- Main Render Function ---
@@ -361,7 +296,7 @@
             
             renderHeader() {
                 return `
-                    <header class="bg-white/80 backdrop-blur-md shadow-sm">
+                    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40">
                       <nav class="container mx-auto px-6 py-3 flex items-center justify-between">
                         <div class="flex items-center">
                           <div class="text-2xl font-bold text-teal-600 cursor-pointer" data-page="products">
@@ -385,7 +320,7 @@
             renderCategoryNavBar() {
                 const categories = ['All', ...new Set(initialProducts.map(p => p.category))];
                 return `
-                    <div class="bg-white/70 backdrop-blur-md shadow-sm">
+                    <div class="bg-white/70 backdrop-blur-md shadow-sm sticky top-[60px] z-40">
                       <div class="container mx-auto px-6">
                         <div class="flex items-center space-x-2 overflow-x-auto py-2 no-scrollbar">
                           ${categories.map(cat => `
@@ -411,7 +346,7 @@
                         </p>
                         <p class="text-slate-600 mt-2 text-sm flex-grow">${product.description}</p>
                         <div class="flex justify-between items-center mt-4">
-                          <span class="font-bold text-xl text-slate-900">$${product.price.toFixed(2)}</span>
+                          <span class="font-bold text-xl text-slate-900">₹${product.price.toLocaleString('en-IN')}</span>
                           <div class="flex items-center gap-2">
                             <button data-action="add-to-cart" data-id="${product.id}" class="bg-teal-100 text-teal-600 px-3 py-2 rounded-lg hover:bg-teal-200 transition-colors duration-300 text-xs font-semibold">
                               Add to Cart
@@ -445,7 +380,7 @@
                 return `
                      <footer class="bg-cyan-100 mt-12 py-6">
                         <div class="container mx-auto px-6 text-center text-slate-600">
-                            &copy; ${new Date().getFullYear() + 1} Shopify. All Rights Reserved.
+                            &copy; ${new Date().getFullYear()} Shopify. All Rights Reserved.
                         </div>
                     </footer>
                 `;
@@ -513,7 +448,7 @@
                                         <img src="${item.imageUrl}" alt="${item.name}" class="w-20 h-20 object-cover rounded-md" />
                                         <div>
                                             <h3 class="font-semibold text-lg">${item.name}</h3>
-                                            <p class="text-slate-500">$${item.price.toFixed(2)}</p>
+                                            <p class="text-slate-500">₹${item.price.toLocaleString('en-IN')}</p>
                                         </div>
                                     </div>
                                     <div class="flex items-center gap-4">
@@ -522,7 +457,7 @@
                                             <span class="px-4">${item.quantity}</span>
                                             <button data-action="update-quantity" data-id="${item.id}" data-quantity="${item.quantity + 1}" class="px-3 py-1">+</button>
                                         </div>
-                                        <p class="font-semibold w-24 text-right">$${(item.price * item.quantity).toFixed(2)}</p>
+                                        <p class="font-semibold w-24 text-right">₹${(item.price * item.quantity).toLocaleString('en-IN')}</p>
                                         <button data-action="remove-from-cart" data-id="${item.id}" class="text-red-500 hover:text-red-700">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                                         </button>
@@ -531,7 +466,7 @@
                             `).join('')}
                             <div class="mt-6 flex justify-end items-center">
                                 <div class="text-right">
-                                    <p class="text-2xl font-bold">Total: $${cartTotal.toFixed(2)}</p>
+                                    <p class="text-2xl font-bold">Total: ₹${cartTotal.toLocaleString('en-IN')}</p>
                                     <button data-page="checkout" class="mt-4 bg-teal-600 text-white px-8 py-3 rounded-lg hover:bg-teal-700 transition-colors">
                                         Proceed to Checkout
                                     </button>
@@ -561,7 +496,7 @@
                                 <textarea name="address" id="address" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-teal-500 focus:border-teal-500" required></textarea>
                             </div>
                             <div class="text-right">
-                                <p class="text-xl font-semibold mb-4">Total: $${cartTotal.toFixed(2)}</p>
+                                <p class="text-xl font-semibold mb-4">Total: ₹${cartTotal.toLocaleString('en-IN')}</p>
                                 <button type="submit" class="w-full bg-teal-600 text-white px-8 py-3 rounded-lg hover:bg-teal-700 transition-colors">
                                     Place Order
                                 </button>
@@ -593,8 +528,9 @@
                                         <div>
                                             <p class="font-bold text-lg">Order #${order.id}</p>
                                             <p class="text-slate-500">Date: ${order.date}</p>
+                                            ${order.paymentId ? `<p class="text-xs text-slate-400 mt-1">Payment ID: ${order.paymentId}</p>` : ''}
                                         </div>
-                                        <p class="font-bold text-xl">$${order.total.toFixed(2)}</p>
+                                        <p class="font-bold text-xl">₹${order.total.toLocaleString('en-IN')}</p>
                                     </div>
                                     <div>
                                         ${order.items.map(item => `
@@ -694,7 +630,8 @@
                 e.preventDefault();
                 const formData = new FormData(e.target);
                 const orderDetails = Object.fromEntries(formData.entries());
-                appState.placeOrder(orderDetails);
+                // Initiate payment instead of directly placing the order
+                appState.initiatePayment(orderDetails);
             }
             if (e.target.id === 'login-form') {
                 e.preventDefault();
@@ -728,4 +665,3 @@
     </script>
 </body>
 </html>
-
